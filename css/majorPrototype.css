@@ -1,0 +1,424 @@
+body{
+  font-family: 'Trebuchet MS', sans-serif;
+  background-color: white;
+  overflow: hidden;
+
+}
+#register-form,#login-form, #join-form{
+  padding: 30px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+
+#register-form input, #login-form input, #join-form input{
+  width: 300px;
+  padding: 5px;
+}
+
+#switchToLogin{
+  display: none;
+}
+
+h1{
+  font-size: 25pt;
+  margin: 0px;
+  text-align: center;
+}
+
+h2{
+  font-style: italic;
+  font-size: 10pt;
+  margin-top: 0px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+label{
+  display: block;
+  margin: 5px;
+}
+
+input,select{
+  margin-bottom: 5px;
+}
+
+.btn, .select{
+  width: 310px;
+  padding: 3px;
+  margin-top: 5px;
+  font-size: 13pt;
+}
+
+.btn{
+  border: 1pt solid black;
+  border-radius: 5px;
+  color: black;
+  background-color: #F2C166;
+  padding: 5px;
+}
+
+
+#register-form{
+  display: none;
+}
+
+#homePage{
+  display:none;
+}
+
+#topBanner{
+  position: relative;
+  top: 0px;
+  border: 2pt solid (214, 212, 212);
+  border-bottom: 2pt solid black;
+  background-color: #ADC8D9;
+  width: 100%;
+  height:100px;
+  opacity: 95%;
+  z-index: 1;
+}
+
+#VClass{
+  position: absolute;
+  font-style: italic;
+  font-style: oblique;
+  font-size: 30pt;
+  left: 20px;
+  top: 30%;
+}
+
+#newToVclass{
+  position: absolute;
+  right: 14%;
+  top: 40%;
+  font-size: 13pt;
+  z-index: 2;
+}
+
+#btnRegisterPage,#btnLoginPage{
+  position: absolute;
+  top: 30%;
+  right: 5%;
+  font-size: 13pt;
+  z-index: 2;
+  width: 100px;
+}
+
+#line3{
+  position: absolute;
+  top: 200px;
+  border: 2pt solid rgb(95, 94, 94);
+  width: 100%;
+}
+
+#titleHomePage{
+  position: absolute;
+  left: 20px;
+  font-size: 25pt;
+  text-align: center;
+  margin-top: 15px;
+}
+
+#welcome{
+  position: absolute;
+  left: 20px;
+  top: 160px;
+  font-style: italic;
+  font-size: 13pt;
+  margin-top: 0px;
+  margin-bottom: 20px;
+}
+
+#createClass, #addClass{
+  display:none;
+  font-size: 20pt;
+  padding: 50px;
+  border: 2pt solid #ADC8D9;
+  border-radius: 5px;
+  width: 500px;
+  margin: 20px;
+  padding: 5px;
+  position:relative;
+}
+
+.newClass{
+  top: 100px;
+  cursor: pointer;
+}
+
+
+
+.notComplete{
+  color: red;
+  font-size: 12pt;
+  text-align: center;
+}
+
+
+#btnExitAdd, #btnExitCreate{
+  position:absolute;
+  top:0;
+  right:0;
+  margin: 5px;
+}
+
+.classroomDisplay{
+  position: absolute;
+  display: flex;
+  top:200px;
+  padding: 20px;
+}
+
+.classImg{
+  border-radius: 10px;
+  margin: 30px;
+}
+
+#mathClassroomlbl{
+  text-align: center;
+  margin-top: 0px;
+}
+
+.joinClass{
+  display:none;
+}
+
+#userSample{
+  border: 2pt solid black;
+  border-radius: 5px;
+  width: 120px;
+  position: relative;
+  left: 30%;
+}
+
+
+#homeImgJoin{
+  display:none;
+  z-index: 3;
+  position: absolute;
+  top: 30%;
+  right: 5%;
+  cursor: pointer;
+}
+
+#user{
+  position: fixed;
+  top:calc(50% - 50px/2); /* height divided by 2*/
+  left:calc(50% - 50px/2); /* width divided by 2*/
+  z-index: 3;
+}
+
+.furniture{
+  display:none;
+  position: relative;
+}
+
+html, body {margin:0; padding:0;}  
+
+#classroomName{
+  position: fixed;
+  top: 15px;
+  left: 50%;
+  transform: translate(-50%);
+  color: rgb(224, 221, 221);
+  font-size: 16pt;
+}
+
+#backgroundImg{
+  margin: 0;
+  padding: 0;
+  width: 2800px;
+  height: auto;
+}
+
+#zoomIn{
+  position: fixed;
+  top: 10px;
+  right: 5px;
+  border: 2pt solid white;
+  border-radius: 10px;
+  background-color: rgb(214, 212, 212);
+  opacity: 80%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  z-index: 4;
+}
+
+#zoomOut{
+  position: fixed;
+  top: 80px;
+  right: 5px;
+  border: 2pt solid white;
+  border-radius: 10px;
+  background-color: rgb(214, 212, 212);
+  opacity: 80%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  z-index: 4;
+}
+
+#toolBar{
+  position: fixed;
+  bottom: 0px;
+  border: 2pt solid (214, 212, 212);
+  background-color: rgb(214, 212, 212);
+  width: 100%;
+  height: 60px;
+  opacity: 95%;
+  z-index: 5;
+}
+
+#homeImg{
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translate(0,-50%);
+  cursor: pointer;
+
+}
+
+
+.parent{
+  position: relative;
+  left: 200px;
+  bottom: 200px;
+  width: 80px;
+  height: 80px;
+}
+
+.fish{
+  position: relative;
+  left: 36%;
+  top: 33px;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.fishBowl{
+  position: absolute;
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+}
+
+
+#progressbar{
+  position: absolute;
+  left: -5px;
+  top: -30px;
+  border: 2pt solid black;
+  width: 90px;
+  height: 10px;
+}
+#progress{
+  position: relative;
+  background-color: pink;
+  width: 10px;
+  height: 10px;
+  left: 0px;
+  right: 0px;
+}
+
+#pinboard{
+  position: absolute;
+  left: 1110px;
+  top: 90px;
+  cursor: pointer;
+}
+
+
+#forum{
+  display: none;
+  border: 2pt solid black;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  width: 80%;
+  height: 70%;
+  position: fixed;
+  top: 10%;
+  left: 10%;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 4;
+  padding: 5px;
+}
+
+
+
+#btnExitPinboard{
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  border: 2pt solid black;
+  border-radius: 5px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+#pinboardName{
+  position: absolute;
+  font-size: 25pt;
+  left: 40px;
+  top: 30px;
+}
+
+#line{
+  position: absolute;
+  top: 75px;
+  left: 40px;
+  border: 2pt solid rgb(95, 94, 94);
+  width: 900px;
+  z-index: 5;
+}
+
+#btnFolders{
+  position: absolute;
+  top: 90px;
+  left: 40px;
+  width: 80px;
+  height: 30px;
+  border-radius: 5px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+#btnNew{
+  position: absolute;
+  top: 90px;
+  left: 130px;
+  width: 80px;
+  height: 30px;
+  border-radius: 5px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+#line2{
+  position: absolute;
+  top: 140px;
+  left: 40px;
+  border: 2pt solid rgb(95, 94, 94);
+  width: 900px;
+  z-index: 5;
+  opacity: 80%;
+}
+
+#examplePost{
+  position: absolute;
+  top: 160px;
+  left: 30px;
+}
+
+
+#btnShortcut, #btnShortcut2{
+  position: absolute;
+  bottom: 0px;
+}
+
+#btnShortcut2{
+  left: 100px;
+}
