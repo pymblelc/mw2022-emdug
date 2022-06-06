@@ -176,6 +176,21 @@ function generateString(length) {
     return result;
 }
 
+//function to live stream camera feed
+function init(){
+    // activate camera through browser
+    var video = document.getElementById('myVideo');
+
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Not adding `{ audio: true }` since we only want video now
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+            $("#camera")[0].checked = true
+            video.srcObject = stream;
+            video.play();
+        });
+    };
+}
+
 /* --- Event Handlers --- */
 //login
 $('#btnLogin').click(function(){
@@ -215,6 +230,7 @@ $('#btnLogin').click(function(){
 
 //register
 $('#btnRegister').click(function(){
+//USE ajax.done --- find in user manaul.
     //making sure input in text boxes
     if($('#registerEmail').val().length > 0 && $('#fullName').val().length > 0 && $('#registerPassword').val().length > 0) {
         var tempItemUser = {
@@ -312,9 +328,26 @@ $('body').on('click', '#mathClassroom', function(){
     $("#homePage").hide();
     $(".classImg").hide();
     $(".joinClass").show();
+    //start camera feed
+    init();
+    $("#camera").checked = true
     $("#homeImgJoin").show();
     $('#joinClassName').text($(this).attr('id'));
 });
+
+$('body').on('click', '#cameraSlider', function(){
+    console.log("fsdhjdskfkds")
+    if($("#camera")[0].checked === false){
+        $("#myVideo").css("opacity", "100%");
+        $(".userSample").css("border","2pt solid black");
+        //turn camera on
+    }
+    if($("#camera")[0].checked === true){
+        $("#myVideo").css("opacity","0%");
+        //turn camera off
+    }
+});
+
 
 $('#btnJoinClass').click(function(){
     if($('#nickname').val().length > 0 && $('#work').val().length > 0){
@@ -456,7 +489,6 @@ function fishProgress() {
         //display dead fish 
     }
 }
-
 
 
 
