@@ -177,9 +177,15 @@ function generateString(length) {
 }
 
 //function to live stream camera feed
-function init(){
+const processor = {};
+processor.doLoad = function init(){
     // activate camera through browser
-    var video = document.getElementById('myVideo');
+    var video = document.getElementById('video');
+    this.video = video;
+
+    this.
+
+
 
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         // Not adding `{ audio: true }` since we only want video now
@@ -336,10 +342,8 @@ $('body').on('click', '#mathClassroom', function(){
 });
 
 $('body').on('click', '#cameraSlider', function(){
-    console.log("fsdhjdskfkds")
     if($("#camera")[0].checked === false){
         $("#myVideo").css("opacity", "100%");
-        $(".userSample").css("border","2pt solid black");
         //turn camera on
     }
     if($("#camera")[0].checked === true){
@@ -363,7 +367,10 @@ $('#btnJoinClass').click(function(){
         $("#topBanner").hide();
         $(".furniture").show();
         $("body").css("background-color","white");
-        $("#user").show();
+        //$("#user").show();
+        $("#myVideo").show();
+        init();
+        
     }else{
         console.log(tempUserDetails)
         $('#joinNotComplete').text("*Please fill out required information");

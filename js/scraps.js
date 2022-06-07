@@ -49,3 +49,10 @@ function linearSearch(arrayToSearch, searchTerm){
     count ++;
     }
 }
+
+
+
+    // <div class = videoContainer id = "user">
+    // <video class="myPhotos userSample" id="myVideo" width="100%" height="100%" autoplay
+    // style="object-fit:cover; transform: scaleX(-1);"></video>
+    // </div>

@@ -12,7 +12,7 @@
 
 <body>
   <!-- <div><button id="btnShortcut">HERE</button></div>
-    <div><button id="btnShortcut2">HERE 2</button></div> -->
+  <div><button id="btnShortcut2">HERE 2</button></div> -->
 
   <!-- Login -->
   <div id="topBanner">
@@ -94,8 +94,10 @@
     <h1>.....You're Joining....</h1>
     <h2 id="joinClassName"></h2>
     <div class="notComplete" id="joinNotComplete"></div>
-    <video class="myPhotos userSample" id="myVideo" width="100%" height="100%" autoplay
+    <div class = "videoContainer">
+      <video class="myPhotos userSample" id="myVideo" autoplay
       style="object-fit:cover; transform: scaleX(-1);"></video>
+    </div>
     <div><label>Nickname: </label><input id="nickname"></div>
     <div><label>What are you working on: </label><input id="work"></div>
     <div>
@@ -117,6 +119,22 @@
   <!-- Random class setup -->
   <div class="furniture">
     <div id="classroomName">- - - - - - - - Maths 02 - - - - - - - -</div>
+
+    <!-- <div class = videoContainer id = "user">
+      <video class="myPhotos userSample" id="myVideo" width="100%" height="100%" autoplay
+      style="object-fit:cover; transform: scaleX(-1);"></video>
+    </div> -->
+    <div >
+      <video id="video" autoplay
+      style="object-fit:cover; transform: scaleX(-1);"></video>
+    </div>
+    <div class = videoContainer id = "user">
+      <canvas class="myPhotos userSample" id="c1" idth="100%" height="100%" ></canvas>
+    </div>
+    <div class = videoContainer id = "c1">
+      <canvas class="myPhotos userSample" id="userVideo2" idth="100%" height="100%" ></canvas>
+    </div>
+
     <div id="forum">
       <div id="pinboardName"> Pinboard: Math O2</div>
       <div id="line"></div>
@@ -127,11 +145,9 @@
       <div id="new">
         <div id="examplePost"><img src="images/newPost.png" width="auto" height="110px"></div>
       </div>
-      <div id="folders">
-
-      </div>
     </div>
-    <div><img id="user" src="images/user.png" width="120" height="120"></div>
+
+
     <div><img id="zoomIn" src="images/plus.png" width="50px" height="50px"></div>
     <div><img id="zoomOut" src="images/minus.png" width="50px" height="50px"></div>
     <div><img id="backgroundImg" src="images/room.png"></div>

@@ -185,7 +185,8 @@ input,select{
   display:none;
 }
 
-.userSample{
+
+.videoContainer{
   border: 2pt solid black;
   border-radius: 5px;
   width: 120px;
@@ -193,7 +194,11 @@ input,select{
   position: relative;
   left: 30%;
 }
-
+#myVideo{
+  width: 120px;
+  border-radius: 5px;
+  height: 120px;
+}
 
 
 .switch {
