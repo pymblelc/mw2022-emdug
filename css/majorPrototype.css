@@ -4,13 +4,14 @@ body{
   overflow: hidden;
 
 }
+
+/*---------- REGISTER AND LOGIN PAGE ---------*/
 #register-form,#login-form, #join-form{
   padding: 30px;
   position: absolute;
   left: 50%;
   transform: translate(-50%);
 }
-
 
 #register-form input, #login-form input, #join-form input{
   width: 300px;
@@ -113,6 +114,8 @@ input,select{
   width: 100%;
 }
 
+/*---------- HOME PAGE ---------*/
+
 #titleHomePage{
   position: absolute;
   left: 20px;
@@ -148,14 +151,11 @@ input,select{
   cursor: pointer;
 }
 
-
-
 .notComplete{
   color: red;
   font-size: 12pt;
   text-align: center;
 }
-
 
 #btnExitAdd, #btnExitCreate{
   position:absolute;
@@ -181,25 +181,27 @@ input,select{
   margin-top: 0px;
 }
 
+/*---------- LOGGING IN PAGE---------*/
+
 .joinClass{
   display:none;
 }
 
-
 .videoContainer{
   border: 2pt solid black;
+  background-color: #ADC8D9;
   border-radius: 5px;
   width: 120px;
   height: 120px;
   position: relative;
   left: 30%;
+  text-align: center;
 }
 #myVideo{
   width: 120px;
   border-radius: 5px;
   height: 120px;
 }
-
 
 .switch {
   position: relative;
@@ -262,8 +264,6 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-
-
 #homeImgJoin{
   display:none;
   z-index: 3;
@@ -273,11 +273,14 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-#user{
+
+/*---------- IN CLASS ---------*/
+#inClassUser{
   position: fixed;
   top:calc(50% - 50px/2); /* height divided by 2*/
   left:calc(50% - 50px/2); /* width divided by 2*/
   z-index: 3;
+  text-align: center;
 }
 
 .furniture{
@@ -350,6 +353,14 @@ html, body {margin:0; padding:0;}
   cursor: pointer;
 
 }
+
+.switchInClass{
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translate(0,-50%);
+}
+
 
 
 .parent{

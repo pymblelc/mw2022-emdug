@@ -7,7 +7,9 @@ var arrVClassClassrooms = [];
 
 var currentUser = {};
 var currentUserId = '';
-var tempUserDetails = {};
+var inClassUserDetails = {};
+
+var classJoined = false;
 
 /* --- Functions --- */
 
@@ -177,16 +179,9 @@ function generateString(length) {
 }
 
 //function to live stream camera feed
-const processor = {};
-processor.doLoad = function init(){
+function init(){
     // activate camera through browser
-    var video = document.getElementById('video');
-    this.video = video;
-
-    this.
-
-
-
+    var video = document.getElementById('myVideo');
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         // Not adding `{ audio: true }` since we only want video now
         navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
@@ -261,7 +256,7 @@ $('#btnRegister').click(function(){
         count ++;
         }
         //if not already in the db add their details 
-        if(found == false){
+        if(found === false){
             addVClassUser(currentUser, urlVClassUsers, apikey);
             console.log('submitted');
             //display next screen - home page
@@ -314,11 +309,11 @@ $('#btnAddClass').click(function(){
         //append class code to class code UserClasses in db and add it to the screen 
         //replace user classes in the object of current user (universal variable)
 //*** fix dodgy class array -->  data types */
-        currentUser.UserClasses[currentUser.Userclasses.length + 1] = newClassCode;
-        var urlEditUsers = 'https://eduggan-7bb9.restdb.io/rest/vclassusers/' + currentUserId;
+       currentUser.UserClasses[currentUser.Userclasses.length + 1] = newClassCode;
+       var urlEditUsers = 'https://eduggan-7bb9.restdb.io/rest/vclassusers/' + currentUserId;
         //add new class to user classes array in database
         var tempItem = {"UserClasses": currentUser.UserClasses}
-        editUser(tempItem, urlEditUsers, apikey)
+       // editUser(tempItem, urlEditUsers, apikey)
 //******      TBF:  PUT Div on screen as soon as they create a class    *************** //
         
     }else{
@@ -349,6 +344,8 @@ $('body').on('click', '#cameraSlider', function(){
     if($("#camera")[0].checked === true){
         $("#myVideo").css("opacity","0%");
         //turn camera off
+        //$(".videoContainer").text(currentUser.FullName);
+        //console.log(currentUser.FullName)
     }
 });
 
@@ -361,18 +358,21 @@ $('#btnJoinClass').click(function(){
             "Camera":$('#camera:selected').val(),
             "Microphone":$('#microphone:selected').val(),
         }
-        tempUserDetails = item;
+        inClassUserDetails = item;
         $(".joinClass").hide();
         $(".classImg").hide();
         $("#topBanner").hide();
         $(".furniture").show();
         $("body").css("background-color","white");
-        //$("#user").show();
-        $("#myVideo").show();
-        init();
-        
+        //moving elements from the previous screen to this one
+        $("#myVideo").appendTo("#inClassUser");
+        $("#cameraSwitchLogin").appendTo("#cameraSwitchInClass");
+        $("#microphoneSwitchLogin").appendTo("#microphoneSwitchInClass");
+        //adding the users nickname and what they're working on
+        $('<label>'+ inClassUserDetails.Nickname + ' is working on ' + inClassUserDetails.Work + '</label>').appendTo(".videoContainer");
+
     }else{
-        console.log(tempUserDetails)
+        console.log(inClassUserDetails)
         $('#joinNotComplete').text("*Please fill out required information");
     }
 });
@@ -395,36 +395,39 @@ $('#btnShortcut2').click(function(){
     homePage();
 });
 
+
 $("body").keydown(function(event){
-    var userRight = $("#user").position().left + 60;
-    var userLeft = $("#user").position().left - 100;
-    var userBottom = $("#user").position().top + 300;
-    var userTop = $("#user").position().top - 60;
+    var userRight = $("#inClassUser").position().left + 60;
+    var userLeft = $("#inClassUser").position().left - 100;
+    var userBottom = $("#inClassUser").position().top + 300;
+    var userTop = $("#inClassUser").position().top - 60;
     var maxRight = $("#backgroundImg").width();
     var maxBottom = $("#backgroundImg").height();
 
     //right//
     if (event.which == 39 && userRight < maxRight) {
-       $("#user").animate({left:"+=50px"});
+        $("#inClassUser").animate({left:"+=50px"});
         window.scrollBy(50,0)
     }
     //down
     if (event.which == 40 && userBottom < maxBottom) {
-       $("#user").animate({top:"+=50px"});
+        $("#inClassUser").animate({top:"+=50px"});
         window.scrollBy(0,50)
     }
 
     //up//
     if (event.which == 38 && userTop > 0) {
-       $("#user").animate({top:"-=50px"});
+        $("#inClassUser").animate({top:"-=50px"});
         window.scrollBy(0,-50)
     }
     //left// 
     if (event.which == 37 && userLeft > 0) {
-       $("#user").animate({left:"-=50px"});
+        $("#inClassUser").animate({left:"-=50px"});
         window.scrollBy(-50,0)
     }
 });
+
+
 
 
 var zoomCount = 0
