@@ -30,7 +30,6 @@ function getVClassUsers(url,apikey){
     $.ajax(settings).done(function (response) {
         console.log(response);
         arrVClassUsers = response;
-        currentUserId = response._id
     });
 }
 
@@ -51,14 +50,18 @@ function addVClassUser(item, url, apikey){
     
     $.ajax(settings).done(function (response) {
         console.log('Item successfully added');
-        console.log(response);
+        currentUserId = response._id
+        console.log(response._id)
     });
+
 }
 
 function editUser(item, url, apikey){
+    // item is "field1": "new value"
     var settings = {
         "async": true,
         "crossDomain": true,
+        // url with object id e.g. "url": "https://eduggan-7bb9.restdb.io/rest/vclassusers/(ObjectID)",
         "url": url,
         "method": "PUT",
         "headers": {
@@ -73,6 +76,7 @@ function editUser(item, url, apikey){
     $.ajax(settings).done(function (response) {
         console.log('Item successfully added');
         console.log(response);
+
     });
 }
 
@@ -93,24 +97,6 @@ function getVClassClassrooms(url,apikey){
     $.ajax(settings).done(function (response) {
         console.log(response);
         arrVClassClassrooms = response;
-        //put on screen all classes that user has - linear search
-        // var i = 0;
-        // var count = 0;
-        // var found = false;
-        // while (currentUser.UserClasses.length > count){
-        //     while (response.length > i && found == false){
-        //         console.log (response[i].ClassCode)
-        //         console.log (currentUser.UserClasses[count])
-        //         if (response[i].ClassCode == currentUser.UserClasses[count]){
-        //             var classItem = '<div class="classImg" id="' + response[i]._id + '" ><img class="classImg" src="' + /*response[i].ImgURL*/ 'https://i.etsystatic.com/17709177/r/il/4a73f1/2000608453/il_1588xN.2000608453_aqkw.jpg' + '">' + response[i].ClassName + "</div>";
-        //             $("body").append(classItem);
-        //             console.log("class appended")
-        //             found == true;
-        //         }
-        //     i ++;
-        //     }
-        // count ++
-        // }
     });
 }
 
@@ -143,19 +129,34 @@ function homePage(){
     $("#switchToLogin").hide();
     $(".joinClass").hide();
     $("#homeImgJoin").hide();
-
     window.scrollTo(0,0)
     $("body").css("background-color","white");
-
     $("#homePage").show();
     $('#welcome').text("Welcome " + currentUser.FullName);
-    //run this function to put class divs on the screen - when working - running at the start for now
-        //getVClassClassrooms(urlVClassClassrooms,apikey);
-    //put an example class on screen  -- have response[i].ImgURL and arrVClassClassrooms[1]._id, arrVClassClassrooms[1].ClassName
-    var classItem = '<div class="classImg" id="mathClassroom"><img src="' + "images/math.jpg" + '" width="100" height="90"><label>' + arrVClassClassrooms[1].ClassName + '</label></div>';
 
-    console.log(classItem)
-    //$("body").append(classItem);
+    console.log (currentUser)
+    console.log (currentUserId)
+
+    //put on screen all classes that user has - linear search
+    var count = 0;
+
+    console.log(currentUser.UserClasses)
+    console.log(currentUser.UserClasses[0])
+
+    while (currentUser.UserClasses.length > count){
+        var i = 0;
+        var found = false;
+        while (arrVClassClassrooms.length > i && found == false){
+            if (currentUser.UserClasses[count] == arrVClassClassrooms[i].ClassCode){
+                var classItem = '<div><img class="classImg" id="' + arrVClassClassrooms[i]._id + '"src="images/toaster.jpg" width="140" height="140"><label id="' + arrVClassClassrooms[i]._id + 'lbl">'+ arrVClassClassrooms[i].ClassName + '</label></div>';
+                $(classItem).prependTo(".classroomDisplay")
+                console.log("class appended")
+                found == true;
+            }
+        i ++;
+        }
+    count ++
+    }
 }
 
 //function to check if user has ability to create or add class 
@@ -170,7 +171,7 @@ function newClass(){
 //function for creating random class code
 const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 function generateString(length) {
-    let result = ' ';
+    let result = '';
     const charactersLength = characters.length;
     for ( let i = 0; i < length; i++ ) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -213,7 +214,6 @@ $('#btnLogin').click(function(){
                 };
                 currentUser = tempItemUser;
                 currentUserId = arrVClassUsers[count]._id;
-                console.log(currentUser)
                 //take user to new page - home page 
                 homePage();
                 //put any of their existing classes on the screen 
@@ -231,20 +231,18 @@ $('#btnLogin').click(function(){
 
 //register
 $('#btnRegister').click(function(){
-//USE ajax.done --- find in user manaul.
     //making sure input in text boxes
     if($('#registerEmail').val().length > 0 && $('#fullName').val().length > 0 && $('#registerPassword').val().length > 0) {
         var tempItemUser = {
             "Email": $('#registerEmail').val(),
             "FullName":$('#fullName').val(), 
             "Password":$('#registerPassword').val(), 
-            "UserType":$('#userType:selected').val(),
+            "UserType":$('#userType option:selected').val(),
 //****** fix later - figure out data types *****//
             "UserClasses": []
         };
         //store current user details in universal variable
         currentUser = tempItemUser;
-        console.log(currentUser)
         //ensure that user isnt already in db 
         var count = 0;
         var found = false; 
@@ -293,33 +291,60 @@ $('#btnCreateClass').click(function(){
         var tempItemClassroom = {ClassName: $('#className').val(),ClassCode: classCode};
         addVClassClassroom(tempItemClassroom, urlVClassClassrooms, apikey);
         $('#generateClassCode').text("Your class code is: " + classCode);
-//********** TBF: CREATE A CLASS DIV. and put it on the screen as soon as they create class ******** //
+        //append class code to users array of classes in db and update universal variable
+        currentUser.UserClasses.push(classCode)
+        console.log(currentUser.UserClasses)
+        // need url to be "https://eduggan-7bb9.restdb.io/rest/vclassusers/(ObjectID)"
+        var urlEditUsers = 'https://eduggan-7bb9.restdb.io/rest/vclassusers/' + currentUserId;
+        var tempItem = {"UserClasses": currentUser.UserClasses}
+        editUser(tempItem, urlEditUsers, apikey)
+        //put class div on screen 
+        var classItem = '<div><img class="classImg" id="' + classCode + '"src="images/toaster.jpg" width="140" height="140"><label id="' + classCode + 'lbl">'+ $('#className').val() + '</label></div>';
+        $(classItem).prependTo(".classroomDisplay")
     }else{
         $('#createClassNotComplete').text("*Please fill out required information");
     }
 })
+
 $('#btnExitCreate').click(function(){
     $("#createClass").hide();
 })
 
-
 $('#btnAddClass').click(function(){
     var newClassCode = $('#recieveClassCode').val()
+    console.log(newClassCode)
     if(newClassCode.length > 0){
-        //append class code to class code UserClasses in db and add it to the screen 
-        //replace user classes in the object of current user (universal variable)
-//*** fix dodgy class array -->  data types */
-       currentUser.UserClasses[currentUser.Userclasses.length + 1] = newClassCode;
-       var urlEditUsers = 'https://eduggan-7bb9.restdb.io/rest/vclassusers/' + currentUserId;
-        //add new class to user classes array in database
-        var tempItem = {"UserClasses": currentUser.UserClasses}
-       // editUser(tempItem, urlEditUsers, apikey)
-//******      TBF:  PUT Div on screen as soon as they create a class    *************** //
-        
+        //find class in db
+        //TBF: eventually retrieve image from database as well.
+        var count = 0;
+        var found = false; 
+        while (arrVClassClassrooms.length > count && found == false){
+            if (arrVClassClassrooms[count].ClassCode == newClassCode){
+                found = true;
+                //append class code to users array of classes in db and update universal variable
+                currentUser.UserClasses.push(newClassCode)
+                console.log(currentUser.UserClasses)
+                // need url to be "https://eduggan-7bb9.restdb.io/rest/vclassusers/(ObjectID)"
+                var urlEditUsers = 'https://eduggan-7bb9.restdb.io/rest/vclassusers/' + currentUserId;
+                var tempItem = {"UserClasses": currentUser.UserClasses}
+                editUser(tempItem, urlEditUsers, apikey)
+                //get corresponding class name
+                var tempClassName = arrVClassClassrooms[count].ClassName;
+                //put class div on screen 
+                var classItem = '<div><img class="classImg" id="' + newClassCode + '"src="images/toaster.jpg" width="140" height="140"><label id="' + newClassCode + 'lbl">'+ tempClassName + '</label></div>';
+                $(classItem).prependTo(".classroomDisplay")
+            }
+        count ++;
+        }
+        //if there is not a match provide an error message
+        if(found == false){
+            $('#classCodeNotValid').text("invalid class code");
+        }
     }else{
         $('#addClassNotComplete').text("*Please fill out required information");
     }
 })
+
 $('#btnExitAdd').click(function(){
     $("#addClass").hide();
 })
@@ -405,23 +430,23 @@ $("body").keydown(function(event){
     var maxBottom = $("#backgroundImg").height();
 
     //right//
-    if (event.which == 39 && userRight < maxRight) {
+    if (event.which == 39 || event.which == 68 && userRight < maxRight) {
         $("#inClassUser").animate({left:"+=50px"});
         window.scrollBy(50,0)
     }
     //down
-    if (event.which == 40 && userBottom < maxBottom) {
+    if (event.which == 40 || event.which == 83 && userBottom < maxBottom) {
         $("#inClassUser").animate({top:"+=50px"});
         window.scrollBy(0,50)
     }
 
     //up//
-    if (event.which == 38 && userTop > 0) {
+    if (event.which == 38 || event.which == 87 && userTop > 0) {
         $("#inClassUser").animate({top:"-=50px"});
         window.scrollBy(0,-50)
     }
     //left// 
-    if (event.which == 37 && userLeft > 0) {
+    if (event.which == 37 || event.which == 65 && userLeft > 0) {
         $("#inClassUser").animate({left:"-=50px"});
         window.scrollBy(-50,0)
     }
