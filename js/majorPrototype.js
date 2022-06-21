@@ -28,6 +28,7 @@ function getVClassUsers(url,apikey){
     }
     
     $.ajax(settings).done(function (response) {
+        
         console.log(response);
         arrVClassUsers = response;
     });
@@ -95,6 +96,8 @@ function getVClassClassrooms(url,apikey){
     }
     
     $.ajax(settings).done(function (response) {
+        $("#bannerSetup").show();
+        $("#login-form").show();
         console.log(response);
         arrVClassClassrooms = response;
     });
@@ -148,7 +151,7 @@ function homePage(){
         var found = false;
         while (arrVClassClassrooms.length > i && found == false){
             if (currentUser.UserClasses[count] == arrVClassClassrooms[i].ClassCode){
-                var classItem = '<div><img class="classImg" id="' + arrVClassClassrooms[i]._id + '"src="images/toaster.jpg" width="140" height="140"><label id="' + arrVClassClassrooms[i]._id + 'lbl">'+ arrVClassClassrooms[i].ClassName + '</label></div>';
+                var classItem = '<div><img class="classImg enterClass" id="' + arrVClassClassrooms[i].ClassName + '"src="images/toaster.jpg" width="140" height="140"><label id="' + arrVClassClassrooms[i]._id + 'lbl">'+ arrVClassClassrooms[i].ClassName + '</label></div>';
                 $(classItem).prependTo(".classroomDisplay")
                 console.log("class appended")
                 found == true;
@@ -238,7 +241,6 @@ $('#btnRegister').click(function(){
             "FullName":$('#fullName').val(), 
             "Password":$('#registerPassword').val(), 
             "UserType":$('#userType option:selected').val(),
-//****** fix later - figure out data types *****//
             "UserClasses": []
         };
         //store current user details in universal variable
@@ -299,7 +301,7 @@ $('#btnCreateClass').click(function(){
         var tempItem = {"UserClasses": currentUser.UserClasses}
         editUser(tempItem, urlEditUsers, apikey)
         //put class div on screen 
-        var classItem = '<div><img class="classImg" id="' + classCode + '"src="images/toaster.jpg" width="140" height="140"><label id="' + classCode + 'lbl">'+ $('#className').val() + '</label></div>';
+        var classItem = '<div><img class="classImg enterClass" id="' + $('#className').val() + '"src="images/toaster.jpg" width="140" height="140"><label id="' + classCode + 'lbl">'+ $('#className').val() + '</label></div>';
         $(classItem).prependTo(".classroomDisplay")
     }else{
         $('#createClassNotComplete').text("*Please fill out required information");
@@ -331,7 +333,7 @@ $('#btnAddClass').click(function(){
                 //get corresponding class name
                 var tempClassName = arrVClassClassrooms[count].ClassName;
                 //put class div on screen 
-                var classItem = '<div><img class="classImg" id="' + newClassCode + '"src="images/toaster.jpg" width="140" height="140"><label id="' + newClassCode + 'lbl">'+ tempClassName + '</label></div>';
+                var classItem = '<div><img class="classImg enterClass" id="' + tempClassName + '"src="images/toaster.jpg" width="140" height="140"><label id="' + newClassCode + 'lbl">'+ tempClassName + '</label></div>';
                 $(classItem).prependTo(".classroomDisplay")
             }
         count ++;
@@ -349,8 +351,9 @@ $('#btnExitAdd').click(function(){
     $("#addClass").hide();
 })
 
+
 //joining a class 
-$('body').on('click', '#mathClassroom', function(){
+$('body').on('click', '.enterClass', function(){
     $("#homePage").hide();
     $(".classImg").hide();
     $(".joinClass").show();
@@ -358,7 +361,9 @@ $('body').on('click', '#mathClassroom', function(){
     init();
     $("#camera").checked = true
     $("#homeImgJoin").show();
+    console.log($(this).attr('id'))
     $('#joinClassName').text($(this).attr('id'));
+
 });
 
 $('body').on('click', '#cameraSlider', function(){
