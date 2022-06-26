@@ -1,15 +1,20 @@
 var apikey = '62315adbdced170e8c83a2c1';
 var urlVClassUsers = 'https://eduggan-7bb9.restdb.io/rest/vclassusers';
 var urlVClassClassrooms = 'https://eduggan-7bb9.restdb.io/rest/vclassclassrooms';  
+var urlVClassPinboards = 'https://eduggan-7bb9.restdb.io/rest/vclasspinboards';  
 
 var arrVClassUsers = [];
 var arrVClassClassrooms = [];
+var arrVClassPinboards = [];
 
 var currentUser = {};
 var currentUserId = '';
 var inClassUserDetails = {};
 
-var classJoined = false;
+var currentClassName = {}
+
+var stopMovement = false;
+
 
 /* --- Functions --- */
 
@@ -28,7 +33,6 @@ function getVClassUsers(url,apikey){
     }
     
     $.ajax(settings).done(function (response) {
-        
         console.log(response);
         arrVClassUsers = response;
     });
@@ -98,12 +102,58 @@ function getVClassClassrooms(url,apikey){
     $.ajax(settings).done(function (response) {
         $("#bannerSetup").show();
         $("#login-form").show();
+        $(".loader").hide();
         console.log(response);
         arrVClassClassrooms = response;
     });
 }
 
 function addVClassClassroom(item, url, apikey){
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": url,
+        "method": "POST",
+        "headers": {
+            "content-type": "application/json",
+            "x-apikey": apikey,
+            "cache-control": "no-cache"
+        },
+        "processData": false,
+        "data": JSON.stringify(item)
+    }
+    
+    $.ajax(settings).done(function (response) {
+        console.log('Item successfully added');
+        console.log(response);
+    });
+}
+
+//app pinboards
+function getVClassPinboards(url,apikey,relevantClassroom){
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": url,
+        "method": "GET",
+        "headers": {
+            "content-type": "application/json",
+            "x-apikey": apikey,
+            "cache-control": "no-cache"
+        }
+    }
+    
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+        for(var i=0; i<response.length; i++){
+            if(response[i].ClassName == relevantClassroom){
+                arrVClassPinboards.push(response[i])
+            }
+        }
+    });
+}
+
+function addVClassPinboard(item, url, apikey){
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -162,7 +212,7 @@ function homePage(){
     }
 }
 
-//function to check if user has ability to create or add class 
+//function to check if user has ability to create or add class - teacher or student
 function newClass(){
     if(currentUser.UserType == "student"){
         $("#addClass").show();
@@ -196,7 +246,41 @@ function init(){
     };
 }
 
+
+function fishProgress() {
+    var progressWidth = $("#progress").width() - 10;
+    if(progressWidth>= 0){
+        $("#progress").css({'width': progressWidth + 'px'});
+    }
+    if(progressWidth == 0){
+        //display dead fish 
+    }
+}
+
+function checkSound(){
+    if($("#inClassUser").position().left > 700 && $("#inClassUser").position().left < 1400 && $("#inClassUser").position().top < 450){
+        $("#music").trigger("play")
+        $("#music")[0].volume = 0.2;
+        console.log("music at 0.2")
+        console.log($("#music")[0].volume)
+        if($("#inClassUser").position().left > 850 && $("#inClassUser").position().left < 1350 && $("#inClassUser").position().top < 250){
+            $("#music").trigger("play")
+            $("#music")[0].volume = 0.6;
+            console.log("music at 0.6")
+            if($("#inClassUser").position().left > 1000 && $("#inClassUser").position().left < 1200 && $("#inClassUser").position().top < 200){
+                $("#music").trigger("play")
+                $("#music")[0].volume = 1;
+                console.log("music at 1")
+            }
+        }
+    }else{
+        $("#music").trigger("pause")
+    }
+
+}
+
 /* --- Event Handlers --- */
+
 //login
 $('#btnLogin').click(function(){
     //if statement to check there is input
@@ -267,6 +351,7 @@ $('#btnRegister').click(function(){
     }
 })
 
+//switch from login to register page
 $('#btnRegisterPage').click(function(){
     $("#login-form").hide();
     $("#switchToRegister").hide();
@@ -274,6 +359,7 @@ $('#btnRegisterPage').click(function(){
     $("#register-form").show();
 })
 
+//switch from register to login page
 $('#btnLoginPage').click(function(){
     $("#login-form").show();
     $("#switchToRegister").show();
@@ -316,11 +402,20 @@ $('#btnAddClass').click(function(){
     var newClassCode = $('#recieveClassCode').val()
     console.log(newClassCode)
     if(newClassCode.length > 0){
+        //check if user doesnt already have class in class codes - so cant add double 
+        var count = 0;
+        var foundWithUser = false; 
+        while (currentUser.UserClasses.length > count && foundWithUser === false){
+            if (arrVClassClassrooms[count].ClassCode == newClassCode){
+                foundWithUser = true //therefore dont continue to search through db
+            }
+            count ++;
+        }
         //find class in db
         //TBF: eventually retrieve image from database as well.
-        var count = 0;
-        var found = false; 
-        while (arrVClassClassrooms.length > count && found == false){
+        count = 0;
+        var found = false
+        while (arrVClassClassrooms.length > count && found === false && foundWithUser === false){
             if (arrVClassClassrooms[count].ClassCode == newClassCode){
                 found = true;
                 //append class code to users array of classes in db and update universal variable
@@ -338,10 +433,11 @@ $('#btnAddClass').click(function(){
             }
         count ++;
         }
-        //if there is not a match provide an error message
-        if(found == false){
-            $('#classCodeNotValid').text("invalid class code");
+        //if there is not a match or user already has class provide an error message
+        if(found == false || foundWithUser == true){
+            $('#classCodeNotValid').text("invalid class code or already added");
         }
+
     }else{
         $('#addClassNotComplete').text("*Please fill out required information");
     }
@@ -352,7 +448,7 @@ $('#btnExitAdd').click(function(){
 })
 
 
-//joining a class 
+//joining space
 $('body').on('click', '.enterClass', function(){
     $("#homePage").hide();
     $(".classImg").hide();
@@ -361,9 +457,14 @@ $('body').on('click', '.enterClass', function(){
     init();
     $("#camera").checked = true
     $("#homeImgJoin").show();
+    currentClassName = $(this).attr('id')
     console.log($(this).attr('id'))
-    $('#joinClassName').text($(this).attr('id'));
-
+    //store class name in global variable
+    $('#joinClassName').text(currentClassName);
+    $("body").css("overflow", "hidden");
+    
+    //accessing all pinboard data relevant to the class 
+    getVClassPinboards(urlVClassPinboards,apikey,currentClassName)
 });
 
 $('body').on('click', '#cameraSlider', function(){
@@ -379,7 +480,7 @@ $('body').on('click', '#cameraSlider', function(){
     }
 });
 
-
+//class space
 $('#btnJoinClass').click(function(){
     if($('#nickname').val().length > 0 && $('#work').val().length > 0){
         var item = {
@@ -407,25 +508,7 @@ $('#btnJoinClass').click(function(){
     }
 });
 
-$('#btnShortcut').click(function(){
-    $("#register-form").hide();
-    $(".furniture").show();
-    $("body").css("background-color","white");
-    $("#user").show();
-    $("#btnShortcut").hide();
-    $("#btnShortcut2").hide();
-    $("#topBanner").hide();
-    
-});
-
-$('#btnShortcut2').click(function(){
-    $("#register-form").hide();
-    $("#btnShortcut2").hide();
-    $("#btnShortcut").hide();
-    homePage();
-});
-
-
+//moving user
 $("body").keydown(function(event){
     var userRight = $("#inClassUser").position().left + 60;
     var userLeft = $("#inClassUser").position().left - 100;
@@ -434,76 +517,126 @@ $("body").keydown(function(event){
     var maxRight = $("#backgroundImg").width();
     var maxBottom = $("#backgroundImg").height();
 
-    //right//
+    if(stopMovement === false){
+            //right//
     if (event.which == 39 || event.which == 68 && userRight < maxRight) {
         $("#inClassUser").animate({left:"+=50px"});
         window.scrollBy(50,0)
+        checkSound();
+
     }
     //down
     if (event.which == 40 || event.which == 83 && userBottom < maxBottom) {
         $("#inClassUser").animate({top:"+=50px"});
         window.scrollBy(0,50)
+        checkSound();
     }
 
     //up//
     if (event.which == 38 || event.which == 87 && userTop > 0) {
         $("#inClassUser").animate({top:"-=50px"});
         window.scrollBy(0,-50)
+        checkSound();
     }
     //left// 
     if (event.which == 37 || event.which == 65 && userLeft > 0) {
         $("#inClassUser").animate({left:"-=50px"});
         window.scrollBy(-50,0)
+        checkSound();
+    }
     }
 });
 
+// var zoomCount = 0
+// //zoom in 
+// $("#zoomIn").click(function(){
+//     if (zoomCount < 2){
+//         var backgroundHeight = $('#backgroundImg').height() * 1.2;
+//         var userHeight = $('#user').height() * 1.2;
+//         $('#backgroundImg').css({'width': 'auto', 'height': backgroundHeight + 'px'});
+//         $('#user').css({'width': userHeight + 'px', 'height': userHeight + 'px'});
+//         zoomCount = zoomCount + 1
+//         console.log(zoomCount)
+//     }
+// });
 
-
-
-var zoomCount = 0
-//zoom in 
-$("#zoomIn").click(function(){
-    if (zoomCount < 2){
-        var backgroundHeight = $('#backgroundImg').height() * 1.2;
-        var userHeight = $('#user').height() * 1.2;
-        $('#backgroundImg').css({'width': 'auto', 'height': backgroundHeight + 'px'});
-        $('#user').css({'width': userHeight + 'px', 'height': userHeight + 'px'});
-        zoomCount = zoomCount + 1
-        console.log(zoomCount)
-    }
-});
-
-//zoom out 
-$("#zoomOut").click(function(){
-    var count = 0
-    if (zoomCount > -1){
-        var backgroundHeight = $('#backgroundImg').height() * 0.8;
-        var userHeight = $('#user').height() * 0.8;
-        $('#backgroundImg').css({'width': 'auto', 'height': backgroundHeight + 'px'});
-        $('#user').css({'width': userHeight + 'px', 'height': userHeight + 'px'});
-        zoomCount = zoomCount -1
-    }
-
-
-});
+// //zoom out 
+// $("#zoomOut").click(function(){
+//     var count = 0
+//     if (zoomCount > -1){
+//         var backgroundHeight = $('#backgroundImg').height() * 0.8;
+//         var userHeight = $('#user').height() * 0.8;
+//         $('#backgroundImg').css({'width': 'auto', 'height': backgroundHeight + 'px'});
+//         $('#user').css({'width': userHeight + 'px', 'height': userHeight + 'px'});
+//         zoomCount = zoomCount -1
+//     }
+// });
 
 $('#homeImg').click(function(){
     homePage();
-});
+}); // TBF!
 
 $('#homeImgJoin').click(function(){
     homePage();
-});
+}); // TBF!
 
+//pinboard feature 
 $('#pinboard').click(function(){
     $("#forum").show();
+    $("#pinboardName").text('Pinboard: ' + currentClassName)
+    //so that the user doesnt move around still
+    stopMovement = true;
+    console.log(arrVClassPinboards)
+    //print all posts in posts container
+    for(var i=0; i<arrVClassPinboards.length; i++){
+        var postItem = '<div class="postItem" id="' + arrVClassPinboards[i].PostTitle + '">'+ arrVClassPinboards[i].PostTitle + '</div>';
+        $(postItem).prependTo("#postsContainer")
+    }
 });
 
 $('#btnExitPinboard').click(function(){
     $("#forum").hide();
+    stopMovement = false;
 });
 
-//feeding fish 
+$('#btnCreatePost').click(function(){
+    $("#postsContainer").hide();
+    $("#createPostContainer").show();
+    $('#btnCreatePost').css('background-color:hsl(44, 70%, 53%)')
+    $('#btnPosts').css("background-color: hsl(44, 98%, 59%)")
+});
+
+$('#btnPosts').click(function(){
+    $("#createPostContainer").hide();
+    $("#postsContainer").show();
+    $('#btnPosts').css('background-color','hsl(44, 70%, 53%)')
+    $('#btnCreatePost').css('background-color','hsl(44, 98%, 59%)')
+});
+
+//making a new post
+$('#btnSubmitPost').click(function(){
+    console.log($('#postText').val())
+    //making a new post
+    if($('#postTitle').val().length > 0 && $('#postText').val().length > 0){
+        var tempPostInfo = {
+            "ClassName": currentClassName,
+            "PostTitle":$('#postTitle').val(), 
+            "PostText":$('#postText').val(), 
+        };
+        console.log(tempPostInfo)
+        //input data in database
+        addVClassPinboard(tempPostInfo, urlVClassPinboards, apikey);
+        console.log('posted!');
+        //display blank input boxes 
+        $('#postTitle').val('');
+        $('#postText').val('');
+    }else{
+        $('#postNotComplete').text("*Not Complete");
+    }
+});
+
+
+//feeding fish feature
 $('.fishBowl' || '.fish').click(function(){
     //left
     $(".fish").animate({left:"-=10px"},1000);
@@ -517,24 +650,15 @@ $('.fishBowl' || '.fish').click(function(){
     var progressWidth = $("#progress").width() + 10;
     if(progressWidth<= 90){
         $("#progress").css({'width': progressWidth + 'px'});
-    }     
+    }
 });
-
-function fishProgress() {
-    var progressWidth = $("#progress").width() - 10;
-    if(progressWidth>= 0){
-        $("#progress").css({'width': progressWidth + 'px'});
-    }
-    if(progressWidth == 0){
-        //display dead fish 
-    }
-}
 
 
 
 /* --- Code to run at start --- */
 getVClassUsers(urlVClassUsers,apikey);
 getVClassClassrooms(urlVClassClassrooms,apikey);
+
 
 //fish bowl - goes down every 10 mins
 setTimeout(fishProgress, 600000);

@@ -126,32 +126,41 @@
   <div class="furniture">
     <div id="classroomName">- - - - - - - - Maths 02 - - - - - - - -</div>
     <div class = "videoContainer" id = "inClassUser"></div>
+    <div class="pinboard"><img id="pinboard" src="images/pinboard.png" width="auto" height="250"></div>
     <div id="forum">
-      <div id="pinboardName"> Pinboard: Math O2</div>
-      <div id="line"></div>
-      <div><button id="btnExitPinboard">X</button></div>
-      <div><button id="btnNew">New</button></div>
-      <div><button id="btnFolders">Folders</button></div>
-      <div id="line2"></div>
-      <div id="new">
-        <div id="examplePost"><img src="images/newPost.png" width="auto" height="110px"></div>
+      <div id="banner2"></div>
+      <div id="pinboardName"></div>
+      <div><button id="btnExitPinboard" >X</button></div>
+      <div><button id="btnPosts" class='btn pinboardBtn'>Posts</button></div>
+      <div><button id ="btnCreatePost" class='btn pinboardBtn'>Create Post</button></div>
+      <div id="postsContainer">
+        <div class="postDisplay">
+          <div class = "postUserDisplay">My Name</div>
+          <div class = "postTitleDisplay">Richard</div>
+          <div class = "postContentDisplay">this is talsdas dsadjashdkasdasdsadsad</div>
+        </div>
+      </div>
+      <div id="createPostContainer">
+        <div class="notComplete" id="postNotComplete"></div>
+        <div><label>Title:</label><input class ="pinboardInput" id="postTitle" type="text" required></div>
+        <div><label>Text:</label><textarea id="postText" type="text"></textarea></div>
+        <div><button class="btn" id="btnSubmitPost">Post</button></div>
       </div>
     </div>
-
-    <div><img id="zoomIn" src="images/plus.png" width="50px" height="50px"></div>
-    <div><img id="zoomOut" src="images/minus.png" width="50px" height="50px"></div>
+    <!-- <div><img id="zoomIn" src="images/plus.png" width="50px" height="50px"></div>
+    <div><img id="zoomOut" src="images/minus.png" width="50px" height="50px"></div> -->
     <div><img id="backgroundImg" src="images/room.png"></div>
+    <audio  id ="music">
+      <source src="images/studyMusic.mp3" type="audio/mpeg">
+    </audio>
     <div id="toolBar">
       <div id="homeImg"><img src="images/home.png" width="50px" height="50px"></div>
       <div class = "switchInClass">
         <span id = "cameraSwitchInClass"> Camera:</span>
         <span id = "microphoneSwitchInClass">Microphone:</span>
       </div>
-
     </div>
-
-    <div class="pinboard"><img id="pinboard" src="images/pinboard.png" width="auto" height="250"></div>
-    <div class="parent">
+    <div class="parent" id="fishContainer">
       <div id="progressbar">
         <div id="progress"></div>
       </div>
