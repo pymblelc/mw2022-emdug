@@ -73,25 +73,34 @@
     <div id="welcome"></div>
     <div id="line3"></div>
     <div class="classroomDisplay">
-      <div>
+      <!-- <div>
         <img class="classImg enterClass" id="mathClassroom" src="images/math.jpg" width="140" height="140"><label
           id="mathClassroomlbl">Math 02</label>
-      </div>
+      </div> -->
       <img class="classImg" id="imgNewClass" src="images/add.svg" width="140" height="140">
-      <div id="createClass"> Create A Class:
+    </div>
+    <div id = 'greyScreen'></div>
+    <div id="createClass">
+      <div><button id="btnExitCreate">X</button></div>
+      <div id = 'createClass1'>
+        <div class = "classMakerHeadings">Create a class</div>
         <div class="notComplete" id="createClassNotComplete"></div>
-        <div><label>Class Name: </label><input id="className" type="text"></div>
-        <div><button id="btnCreateClass">Create Class</button></div>
+        <div class = 'fontControl'><label>Class Name: </label><input id="className" type="text"></div>
+        <div><button class = "btn" id="btnCreateClass">Create Class</button></div>
+      </div>
+      <div id = 'createClass2'>
+        <div class = "classMakerHeading" id = 'classCodeHeader'>Class Code</div>
+        <div id = "classCodeInstructions" class = 'fontControl'> Students log in with this class code: </div>
         <div id="generateClassCode"></div>
-        <div><button id="btnExitCreate">X</button></div>
       </div>
-      <div id="addClass">
-        <div class="notComplete" id="classCodeNotValid"></div>
-        <div class="notComplete" id="addClassNotComplete"></div>
-        <div><label>Class code: </label><input id="recieveClassCode" type="text"></div>
-        <div><button id="btnExitAdd">X</button></div>
-        <div><button id="btnAddClass">Add Class</button></div>
-      </div>
+    </div>
+    <div id="addClass">
+      <div class = "classMakerHeadings">Add a Class</div>
+      <div class="notComplete" id="classCodeNotValid"></div>
+      <div class="notComplete" id="addClassNotComplete"></div>
+      <div class = 'fontControl'><label>Class code: </label><input id="recieveClassCode" type="text"></div>
+      <div><button id="btnExitAdd">X</button></div>
+      <div class = "btn"><button id="btnAddClass">Add Class</button></div>
     </div>
   </div>
 
@@ -100,7 +109,7 @@
     <h1>.....You're Joining....</h1>
     <h2 id="joinClassName"></h2>
     <div class="notComplete" id="joinNotComplete"></div>
-    <div class = "videoContainer">
+    <div class = "videoContainer" id = "outOfClassUser">
       <video class="myPhotos userSample" id="myVideo" autoplay
       style="object-fit:cover; transform: scaleX(-1);"></video>
     </div>
@@ -112,11 +121,11 @@
         <input type="checkbox" id="camera">
         <span class="slider round" id = "cameraSlider"></span>
       </label>
-      <label>Microphone:</label>
+      <!-- <label>Microphone:</label>
       <label class="switch" id = "microphoneSwitchLogin">
         <input type="checkbox">
         <span class="slider round"></span>
-      </label>
+      </label> -->
     </div>
     <div><button class=btn id="btnJoinClass">Join Class</button></div>
   </div>
@@ -134,30 +143,26 @@
       <div><button id="btnPosts" class='btn pinboardBtn'>Posts</button></div>
       <div><button id ="btnCreatePost" class='btn pinboardBtn'>Create Post</button></div>
       <div id="postsContainer">
-        <div class="postDisplay">
-          <div class = "postUserDisplay">My Name</div>
-          <div class = "postTitleDisplay">Richard</div>
-          <div class = "postContentDisplay">this is talsdas dsadjashdkasdasdsadsad</div>
-        </div>
+        <div id="noPosts">There are no posts yet :(</div>
       </div>
       <div id="createPostContainer">
         <div class="notComplete" id="postNotComplete"></div>
         <div><label>Title:</label><input class ="pinboardInput" id="postTitle" type="text" required></div>
-        <div><label>Text:</label><textarea id="postText" type="text"></textarea></div>
+        <div><label>Text:</label><textarea class = "pinbaordInput" id="postText" type="text"></textarea></div>
         <div><button class="btn" id="btnSubmitPost">Post</button></div>
       </div>
     </div>
     <!-- <div><img id="zoomIn" src="images/plus.png" width="50px" height="50px"></div>
     <div><img id="zoomOut" src="images/minus.png" width="50px" height="50px"></div> -->
-    <div><img id="backgroundImg" src="images/room.png"></div>
+    <div id="background"><img id="backgroundImg" src="images/room2.png"></div>
     <audio  id ="music">
       <source src="images/studyMusic.mp3" type="audio/mpeg">
     </audio>
     <div id="toolBar">
-      <div id="homeImg"><img src="images/home.png" width="50px" height="50px"></div>
+      <div id="homeImgInClass"><img src="images/home.png" width="50px" height="50px"></div>
       <div class = "switchInClass">
         <span id = "cameraSwitchInClass"> Camera:</span>
-        <span id = "microphoneSwitchInClass">Microphone:</span>
+        <!-- <span id = "microphoneSwitchInClass">Microphone:</span> -->
       </div>
     </div>
     <div class="parent" id="fishContainer">

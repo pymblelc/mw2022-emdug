@@ -3,6 +3,20 @@ var urlVClassUsers = 'https://eduggan-7bb9.restdb.io/rest/vclassusers';
 var urlVClassClassrooms = 'https://eduggan-7bb9.restdb.io/rest/vclassclassrooms';  
 var urlVClassPinboards = 'https://eduggan-7bb9.restdb.io/rest/vclasspinboards';  
 
+var arrBackgroundColours = [
+   {colour: "yellow", hex: "#e4c05d"},
+   {colour: "blue", hex: "#91bae2"},
+   {colour: "purple", hex: "#b875f9"},
+   {colour: "brown", hex: "#ccb292"},
+]
+var arrImageBorders = [
+    {colour: "blue", hex: "#4deeea"},
+    {colour: "green", hex: "#74ee15"},
+    {colour: "yellow", hex: "#ffe700"},
+    {colour: "pink", hex: "#f000ff"},
+    
+]
+
 var arrVClassUsers = [];
 var arrVClassClassrooms = [];
 var arrVClassPinboards = [];
@@ -14,7 +28,7 @@ var inClassUserDetails = {};
 var currentClassName = {}
 
 var stopMovement = false;
-
+var initialHomeSetup = false;
 
 /* --- Functions --- */
 
@@ -148,6 +162,11 @@ function getVClassPinboards(url,apikey,relevantClassroom){
         for(var i=0; i<response.length; i++){
             if(response[i].ClassName == relevantClassroom){
                 arrVClassPinboards.push(response[i])
+                //print all posts in posts container
+                var postItem =  '<div class="postDisplay"><div class = "postNameDisplay">'+ response[i].UsersName +'</div><div class = "postContent"><div class = "postTitleDisplay">'+ response[i].PostTitle +'</div><div class = "postContentDisplay">'+ response[i].PostText +'</div></div></div>'
+                $(postItem).prependTo("#postsContainer")
+                //hide the div that says there are no posts
+                $("#noPosts").hide()
             }
         }
     });
@@ -175,41 +194,48 @@ function addVClassPinboard(item, url, apikey){
 }
 
 function homePage(){
+    $("#homePage").show();
+    $("#bannerSetup").show();
     $("#register-form").hide();
     $("#login-form").hide();
     $(".furniture").hide();
+
     $("#switchToRegister").hide();
     $("#switchToLogin").hide();
-    $(".joinClass").hide();
+    $("#join-form").hide();
     $("#homeImgJoin").hide();
-    window.scrollTo(0,0)
-    $("body").css("background-color","white");
-    $("#homePage").show();
+    
     $('#welcome').text("Welcome " + currentUser.FullName);
 
     console.log (currentUser)
     console.log (currentUserId)
 
     //put on screen all classes that user has - linear search
-    var count = 0;
-
-    console.log(currentUser.UserClasses)
-    console.log(currentUser.UserClasses[0])
-
-    while (currentUser.UserClasses.length > count){
-        var i = 0;
-        var found = false;
-        while (arrVClassClassrooms.length > i && found == false){
-            if (currentUser.UserClasses[count] == arrVClassClassrooms[i].ClassCode){
-                var classItem = '<div><img class="classImg enterClass" id="' + arrVClassClassrooms[i].ClassName + '"src="images/toaster.jpg" width="140" height="140"><label id="' + arrVClassClassrooms[i]._id + 'lbl">'+ arrVClassClassrooms[i].ClassName + '</label></div>';
-                $(classItem).prependTo(".classroomDisplay")
-                console.log("class appended")
-                found == true;
+    if(initialHomeSetup === false){
+        console.log("printing")
+        var count = 0;
+        console.log(currentUser.UserClasses)
+        console.log(currentUser.UserClasses[0])
+        //sort classes 
+        
+        while (currentUser.UserClasses.length > count){
+            var i = 0;
+            var found = false;
+            while (arrVClassClassrooms.length > i && found == false){
+                if (currentUser.UserClasses[count] == arrVClassClassrooms[i].ClassCode){
+                    var borderColour = randBorderColour();
+                    var classItem = '<div><img class="classImg enterClass" id="' + arrVClassClassrooms[i].ClassName + '"src="images/class.png" width="140" height="140" style="border: 5px solid '+ borderColour +';"><label class = "classImglbl" id="' + arrVClassClassrooms[i]._id + 'lbl">'+ arrVClassClassrooms[i].ClassName + '</label><label class="classCodeDisplay">'+arrVClassClassrooms[i].ClassCode+'</label></div>';
+                    $(classItem).prependTo(".classroomDisplay")
+                    console.log("class appended")
+                    found == true;
+                }
+            i ++;
             }
-        i ++;
+        count ++
         }
-    count ++
+        initialHomeSetup = true;
     }
+
 }
 
 //function to check if user has ability to create or add class - teacher or student
@@ -218,6 +244,7 @@ function newClass(){
         $("#addClass").show();
     }else{
         $("#createClass").show();
+        $("#createClass1").show();
     }
 }
 
@@ -258,25 +285,33 @@ function fishProgress() {
 }
 
 function checkSound(){
-    if($("#inClassUser").position().left > 700 && $("#inClassUser").position().left < 1400 && $("#inClassUser").position().top < 450){
+    if($("#inClassUser").position().left > 700 && $("#inClassUser").position().left < 1400 && $("#inClassUser").position().top < 400){
         $("#music").trigger("play")
         $("#music")[0].volume = 0.2;
-        console.log("music at 0.2")
-        console.log($("#music")[0].volume)
-        if($("#inClassUser").position().left > 850 && $("#inClassUser").position().left < 1350 && $("#inClassUser").position().top < 250){
+        if($("#inClassUser").position().left > 850 && $("#inClassUser").position().left < 1350 && $("#inClassUser").position().top < 450){
             $("#music").trigger("play")
             $("#music")[0].volume = 0.6;
-            console.log("music at 0.6")
-            if($("#inClassUser").position().left > 1000 && $("#inClassUser").position().left < 1200 && $("#inClassUser").position().top < 200){
+            if($("#inClassUser").position().left > 1000 && $("#inClassUser").position().left < 1200 && $("#inClassUser").position().top < 300){
                 $("#music").trigger("play")
                 $("#music")[0].volume = 1;
-                console.log("music at 1")
             }
         }
     }else{
         $("#music").trigger("pause")
     }
 
+}
+
+function randBackgroundColour(){
+    var randElement = Math.floor(Math.random() * arrBackgroundColours.length)
+    console.log(arrBackgroundColours[randElement].hex)
+    return arrBackgroundColours[randElement].hex
+}
+
+function randBorderColour(){
+    var randElement = Math.floor(Math.random() * arrImageBorders.length)
+    console.log(arrImageBorders[randElement].hex)
+    return arrImageBorders[randElement].hex
 }
 
 /* --- Event Handlers --- */
@@ -369,6 +404,7 @@ $('#btnLoginPage').click(function(){
 
 $('#imgNewClass').click(function(){
     newClass();
+    $("#greyScreen").show();
 })
 
 $('#btnCreateClass').click(function(){
@@ -378,7 +414,10 @@ $('#btnCreateClass').click(function(){
         console.log(classCode);
         var tempItemClassroom = {ClassName: $('#className').val(),ClassCode: classCode};
         addVClassClassroom(tempItemClassroom, urlVClassClassrooms, apikey);
-        $('#generateClassCode').text("Your class code is: " + classCode);
+        //display the class code
+        $("#createClass1").hide();
+        $("#createClass2").show();
+        $('#generateClassCode').text(classCode);
         //append class code to users array of classes in db and update universal variable
         currentUser.UserClasses.push(classCode)
         console.log(currentUser.UserClasses)
@@ -387,8 +426,10 @@ $('#btnCreateClass').click(function(){
         var tempItem = {"UserClasses": currentUser.UserClasses}
         editUser(tempItem, urlEditUsers, apikey)
         //put class div on screen 
-        var classItem = '<div><img class="classImg enterClass" id="' + $('#className').val() + '"src="images/toaster.jpg" width="140" height="140"><label id="' + classCode + 'lbl">'+ $('#className').val() + '</label></div>';
+        var borderColour = randBorderColour();
+        var classItem = '<div><img class="classImg enterClass" id="' + $('#className').val() + '"src="images/class.png" width="140" height="140" style="border: 5px solid '+ borderColour +';"><label class = "classImglbl" id="' + classCode + 'lbl">'+ $('#className').val() + '</label><label class="classCodeDisplay">'+ classCode+'</label></div>';
         $(classItem).prependTo(".classroomDisplay")
+
     }else{
         $('#createClassNotComplete').text("*Please fill out required information");
     }
@@ -396,6 +437,7 @@ $('#btnCreateClass').click(function(){
 
 $('#btnExitCreate').click(function(){
     $("#createClass").hide();
+    $("#greyScreen").hide();
 })
 
 $('#btnAddClass').click(function(){
@@ -428,7 +470,8 @@ $('#btnAddClass').click(function(){
                 //get corresponding class name
                 var tempClassName = arrVClassClassrooms[count].ClassName;
                 //put class div on screen 
-                var classItem = '<div><img class="classImg enterClass" id="' + tempClassName + '"src="images/toaster.jpg" width="140" height="140"><label id="' + newClassCode + 'lbl">'+ tempClassName + '</label></div>';
+                var borderColour = randBorderColour();
+                var classItem = '<div><img class="classImg enterClass" id="' + tempClassName + '"src="images/class.png" width="140" height="140" style="border: 5px solid '+ borderColour +';"><label class = "classImglbl" id="' + newClassCode + 'lbl">'+ tempClassName + '</label><label class="classCodeDisplay">'+newClassCode+'</label></div>';
                 $(classItem).prependTo(".classroomDisplay")
             }
         count ++;
@@ -445,14 +488,20 @@ $('#btnAddClass').click(function(){
 
 $('#btnExitAdd').click(function(){
     $("#addClass").hide();
+    $("#greyScreen").hide();
 })
 
 
 //joining space
 $('body').on('click', '.enterClass', function(){
     $("#homePage").hide();
-    $(".classImg").hide();
+    // $(".classImg").hide();
     $(".joinClass").show();
+    //randomise class background colour 
+    colour = randBackgroundColour()
+    console.log(colour)
+    $("#background").css("background-color", colour )
+
     //start camera feed
     init();
     $("#camera").checked = true
@@ -461,8 +510,8 @@ $('body').on('click', '.enterClass', function(){
     console.log($(this).attr('id'))
     //store class name in global variable
     $('#joinClassName').text(currentClassName);
+    $('#classroomName').text('- - - - - - - - ' + currentClassName + ' - - - - - - - -')
     $("body").css("overflow", "hidden");
-    
     //accessing all pinboard data relevant to the class 
     getVClassPinboards(urlVClassPinboards,apikey,currentClassName)
 });
@@ -490,18 +539,18 @@ $('#btnJoinClass').click(function(){
             "Microphone":$('#microphone:selected').val(),
         }
         inClassUserDetails = item;
-        $(".joinClass").hide();
-        $(".classImg").hide();
-        $("#topBanner").hide();
+        $("#join-form").hide();
+        $("#bannerSetup").hide();
         $(".furniture").show();
-        $("body").css("background-color","white");
         //moving elements from the previous screen to this one
         $("#myVideo").appendTo("#inClassUser");
         $("#cameraSwitchLogin").appendTo("#cameraSwitchInClass");
         $("#microphoneSwitchLogin").appendTo("#microphoneSwitchInClass");
         //adding the users nickname and what they're working on
-        $('<label>'+ inClassUserDetails.Nickname + ' is working on ' + inClassUserDetails.Work + '</label>').appendTo(".videoContainer");
-
+        $('<div id = "inClassUserDescriptionHTML">'+ inClassUserDetails.Nickname + ' is working on ' + inClassUserDetails.Work + '</div>').appendTo("#inClassUser");
+        //clear input boxes
+        $('#nickname').val('')
+        $('#work').val('')
     }else{
         console.log(inClassUserDetails)
         $('#joinNotComplete').text("*Please fill out required information");
@@ -572,13 +621,16 @@ $("body").keydown(function(event){
 //     }
 // });
 
-$('#homeImg').click(function(){
-    homePage();
-}); // TBF!
-
 $('#homeImgJoin').click(function(){
     homePage();
-}); // TBF!
+}); 
+
+$('#homeImgInClass').click(function(){
+    homePage();
+    $('#inClassUserDescriptionHTML').remove();
+    $("#myVideo").appendTo("#outOfClassUser");
+
+}); 
 
 //pinboard feature 
 $('#pinboard').click(function(){
@@ -586,12 +638,6 @@ $('#pinboard').click(function(){
     $("#pinboardName").text('Pinboard: ' + currentClassName)
     //so that the user doesnt move around still
     stopMovement = true;
-    console.log(arrVClassPinboards)
-    //print all posts in posts container
-    for(var i=0; i<arrVClassPinboards.length; i++){
-        var postItem = '<div class="postItem" id="' + arrVClassPinboards[i].PostTitle + '">'+ arrVClassPinboards[i].PostTitle + '</div>';
-        $(postItem).prependTo("#postsContainer")
-    }
 });
 
 $('#btnExitPinboard').click(function(){
@@ -602,8 +648,8 @@ $('#btnExitPinboard').click(function(){
 $('#btnCreatePost').click(function(){
     $("#postsContainer").hide();
     $("#createPostContainer").show();
-    $('#btnCreatePost').css('background-color:hsl(44, 70%, 53%)')
-    $('#btnPosts').css("background-color: hsl(44, 98%, 59%)")
+    $('#btnCreatePost').css('background-color','hsl(44, 70%, 53%)')
+    $('#btnPosts').css("background-color","hsl(44, 98%, 59%)")
 });
 
 $('#btnPosts').click(function(){
@@ -615,13 +661,18 @@ $('#btnPosts').click(function(){
 
 //making a new post
 $('#btnSubmitPost').click(function(){
-    console.log($('#postText').val())
+    //making the error message blank
+    $('#postNotComplete').hide();
     //making a new post
     if($('#postTitle').val().length > 0 && $('#postText').val().length > 0){
+        var postText = $('#postText').val()
+        var postTitle = $('#postTitle').val()
+
         var tempPostInfo = {
             "ClassName": currentClassName,
-            "PostTitle":$('#postTitle').val(), 
-            "PostText":$('#postText').val(), 
+            "PostTitle": postTitle, 
+            "PostText": postText, 
+            "UsersName": currentUser.FullName, 
         };
         console.log(tempPostInfo)
         //input data in database
@@ -630,9 +681,16 @@ $('#btnSubmitPost').click(function(){
         //display blank input boxes 
         $('#postTitle').val('');
         $('#postText').val('');
+        //put data on the screen 
+        var postItem =  '<div class="postDisplay"><div class = "postNameDisplay">'+ currentUser.FullName +'</div><div class = "postContent"><div class = "postTitleDisplay">'+ postTitle +'</div><div class = "postContentDisplay">'+ postText +'</div></div></div>'
+        $(postItem).prependTo("#postsContainer")
+        //get rid of no posts div 
+        $("#noPosts").hide()
     }else{
+        $('#postNotComplete').show();
         $('#postNotComplete').text("*Not Complete");
     }
+
 });
 
 
@@ -662,4 +720,3 @@ getVClassClassrooms(urlVClassClassrooms,apikey);
 
 //fish bowl - goes down every 10 mins
 setTimeout(fishProgress, 600000);
-

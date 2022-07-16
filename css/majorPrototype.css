@@ -116,7 +116,7 @@ input,select{
   font-style: italic;
   font-style: oblique;
   font-size: 30pt;
-  left: 20px;
+  left: 45px;
   top: 30%;
 }
 
@@ -148,7 +148,7 @@ input,select{
 
 #titleHomePage{
   position: absolute;
-  left: 20px;
+  left: 45px;
   font-size: 25pt;
   text-align: center;
   margin-top: 15px;
@@ -156,7 +156,7 @@ input,select{
 
 #welcome{
   position: absolute;
-  left: 20px;
+  left: 45px;
   top: 160px;
   font-style: italic;
   font-size: 13pt;
@@ -164,16 +164,69 @@ input,select{
   margin-bottom: 20px;
 }
 
+#greyScreen{
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  z-index: 3;
+  background-color: #929090;
+  top: 0px;
+  position: fixed;
+  opacity: 70%;
+  display: none;
+}
+
 #createClass, #addClass{
   display:none;
   font-size: 20pt;
-  padding: 50px;
   border: 2pt solid #ADC8D9;
-  border-radius: 5px;
   width: 500px;
   margin: 20px;
-  padding: 5px;
-  position:relative;
+  z-index: 4;
+  position: fixed;
+  left: 30%;
+  height: 179px;
+  padding: 25px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+#createClass1, #createClass2{
+  display: none;
+}
+
+#generateClassCode{
+  text-align: center;
+  margin-top: 26px;
+  color: hsl(44, 98%, 59%);
+  font-size: 38pt;
+  font-weight: bold;
+}
+
+#classCodeInstructions{
+  text-align: center;
+}
+.classMakerHeadings{
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+#classCodeHeader{
+  text-align: center;
+}
+
+#className, #recieveClassCode {
+  width: 60%;
+}
+
+#btnCreateClass, #btnAddClass{
+  width: 180px;
+  margin-top: 20px;
+}
+
+.fontControl{
+  font-weight: bold;
+  font-size: 12pt;
 }
 
 .newClass{
@@ -205,6 +258,21 @@ input,select{
 .classImg{
   border-radius: 10px;
   margin: 30px;
+  text-align: center;
+}
+
+.classImglbl{
+  text-align: center;
+  font-weight: bold;
+  font-size: 12pt;
+  margin-top: -15px;
+}
+
+.classCodeDisplay{
+  margin: 0px;
+  font-weight: 100;
+  color: grey;
+  font-size: 10pt;
   text-align: center;
 }
 
@@ -339,7 +407,9 @@ html, body {margin:0; padding:0;}
   height: auto;
 }
 
-
+#background{
+  width: 3000px;
+}
 
 #zoomIn{
   position: fixed;
@@ -380,7 +450,7 @@ html, body {margin:0; padding:0;}
   z-index: 5;
 }
 
-#homeImg{
+#homeImgInClass{
   position: absolute;
   right: 20px;
   top: 50%;
@@ -492,14 +562,15 @@ html, body {margin:0; padding:0;}
 }
 
 .pinboardBtn{
-  width: 514px;
+  width: 571px;
   top: 87px;
-  height: 37px;
+  height: 44px;
+  z-index: 5;
 }
 
 #btnCreatePost{
   position: absolute;
-  left: 511px;
+  left: 568px;
   cursor: pointer;
 }
 
@@ -510,16 +581,25 @@ html, body {margin:0; padding:0;}
 
 }
 
+#noPosts{
+  top: 63px;
+  position: absolute;
+  left: 36%;
+}
+
 #postsContainer, #createPostContainer{
   position: absolute;
   height: 68%;
   width: 100%;
   top: 130px;
   font-family: monospace;
+  padding-top: 15px;
 }
 
 .pinboardInput{
   font-family: monospace;
+  background-color: #eceff1;
+  border-radius: 5px;
 }
 
 #postTitle{
@@ -536,16 +616,49 @@ html, body {margin:0; padding:0;}
   padding-inline: 89px;
   padding-top: 10px;
 }
+#createPostContainer label{
+  font-weight: bold;
+  font-size: 12pt;
+}
 
-.post{
-  border: 2pt solid (214, 212, 212);
+#postsContainer{
+  padding-inline: 76px;
+  overflow-x: scroll;
+}
+
+.postDisplay{
+  display: flex;
+  flex-direction: row;
+  border: 2pt solid black;
   height: auto;
   width: 82%;
   padding: 10px;
+  border-radius: 5px;
+  margin: 10px;
+  background-color: #eceff1;
 }
 
-.postUserDisplay{
-  border: 2pt solid (214, 212, 212);
-  width: 30px;
-  height: 30px;
+.postContent{
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
 }
+
+.postTitleDisplay{
+  font-weight: bold;
+  font-style: italic;
+  font-size: 12pt;
+}
+.postNameDisplay{
+  border: 2pt solid black;
+  border-radius: 5px;
+  width: auto;
+  height: auto;
+  padding: 5px;
+  margin: 5px;
+  margin-right: 26px;
+  font-weight: bold;
+  font-style: italic;
+  background-color: #88b9d7;
+}
+
