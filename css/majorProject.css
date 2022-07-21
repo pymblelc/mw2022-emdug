@@ -102,7 +102,7 @@ input,select{
   position: relative;
   top: 0px;
   border: 2pt solid (214, 212, 212);
-  border-bottom: 2pt solid black;
+  /* border-bottom: 2pt solid black; */
   /* background-color: #adc8d9; */
   background-color: #88b9d7;
   width: 100%;

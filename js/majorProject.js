@@ -292,6 +292,16 @@ function generateString(length) {
     return result;
 }
 
+function randBackgroundColour(){
+    var randElement = Math.floor(Math.random() * arrBackgroundColours.length)
+    return arrBackgroundColours[randElement].hex
+}
+
+function randBorderColour(){
+    var randElement = Math.floor(Math.random() * arrImageBorders.length)
+    return arrImageBorders[randElement].hex
+}
+
 //function to live stream camera feed
 function init(){
     // activate camera through browser
@@ -311,9 +321,6 @@ function fishProgress() {
     var progressWidth = $("#progress").width() - 10;
     if(progressWidth>= 0){
         $("#progress").css({'width': progressWidth + 'px'});
-    }
-    if(progressWidth == 0){
-        //display dead fish 
     }
 }
 
@@ -353,15 +360,6 @@ function checkPinboard(){
     }
 }
 
-function randBackgroundColour(){
-    var randElement = Math.floor(Math.random() * arrBackgroundColours.length)
-    return arrBackgroundColours[randElement].hex
-}
-
-function randBorderColour(){
-    var randElement = Math.floor(Math.random() * arrImageBorders.length)
-    return arrImageBorders[randElement].hex
-}
 
 /* --- Event Handlers --- */
 
