@@ -278,6 +278,8 @@ function newClass(){
     }else{
         $("#createClass").show();
         $("#createClass1").show();
+        $("#createClass2").hide();
+
     }
 }
 
