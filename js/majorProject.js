@@ -30,6 +30,8 @@ var currentClassName = {}
 var stopMovement = false;
 var initialHomeSetup = false;
 
+var arrClassesToSort = [];
+
 /* --- Functions --- */
 
 //app users
@@ -193,6 +195,37 @@ function addVClassPinboard(item, url, apikey){
     });
 }
 
+function selectionSortClasses(theArray){
+    console.log("i am sorting")
+    //put your code here for the selection sort
+    var pass = 0;
+    var count = 0;
+    var minimum = 0;
+    
+    while(pass < theArray.length - 1){
+        count = pass + 1;
+        minimum = pass;
+        while(count < theArray.length-1){
+            if(theArray[count].ClassName < theArray[minimum].ClassName){
+                minimum = count;
+            }
+            count++;
+        }
+        var temp = theArray[minimum];
+        theArray[minimum] = theArray[pass];
+        theArray[pass] = temp;
+        pass++;
+    }
+    //return theArray;
+    //print divs
+    for(var i = 0; i < theArray.length; i++){
+        var borderColour = randBorderColour();
+        var classItem = '<div><img class="classImg enterClass" id="' + theArray[i].ClassName + '"src="images/class.png" width="140" height="140" style="border: 5px solid '+ borderColour +';"><label class = "classImglbl" id="' + theArray[i]._id + 'lbl">'+ theArray[i].ClassName + '</label><label class="classCodeDisplay">'+theArray[i].ClassCode+'</label></div>';
+        $(classItem).prependTo(".classroomDisplay")
+        console.log("classAdded")
+    }
+}
+
 function homePage(){
     $("#homePage").show();
     $("#bannerSetup").show();
@@ -214,25 +247,25 @@ function homePage(){
     if(initialHomeSetup === false){
         console.log("printing")
         var count = 0;
-        console.log(currentUser.UserClasses)
-        console.log(currentUser.UserClasses[0])
-        //sort classes 
-        
         while (currentUser.UserClasses.length > count){
             var i = 0;
             var found = false;
             while (arrVClassClassrooms.length > i && found == false){
                 if (currentUser.UserClasses[count] == arrVClassClassrooms[i].ClassCode){
-                    var borderColour = randBorderColour();
-                    var classItem = '<div><img class="classImg enterClass" id="' + arrVClassClassrooms[i].ClassName + '"src="images/class.png" width="140" height="140" style="border: 5px solid '+ borderColour +';"><label class = "classImglbl" id="' + arrVClassClassrooms[i]._id + 'lbl">'+ arrVClassClassrooms[i].ClassName + '</label><label class="classCodeDisplay">'+arrVClassClassrooms[i].ClassCode+'</label></div>';
-                    $(classItem).prependTo(".classroomDisplay")
-                    console.log("class appended")
+                    //sort classes by name
+                    tempItem = arrVClassClassrooms[i]
+                    console.log(tempItem)
+                    arrClassesToSort.push(tempItem)
+                    console.log(arrClassesToSort)
                     found == true;
                 }
             i ++;
             }
         count ++
         }
+        //sort classes 
+        console.log(arrClassesToSort)
+        selectionSortClasses(arrClassesToSort)
         initialHomeSetup = true;
     }
 
@@ -302,15 +335,31 @@ function checkSound(){
 
 }
 
+function checkFish(){
+    if($("#inClassUser").position().left < 320 && $("#inClassUser").position().top > 400){
+        $("#fishPrompt").show()
+    }else{
+        $("#fishPrompt").hide()
+    }
+}
+
+function checkPinboard(){
+    if($("#inClassUser").position().left > 490 && $("#inClassUser").position().left < 870 && $("#inClassUser").position().top < 320){
+        $("#pinboardPrompt").show()
+        console.log("it is shown")
+    }else{
+        $("#pinboardPrompt").hide()
+        console.log("it is hidden")
+    }
+}
+
 function randBackgroundColour(){
     var randElement = Math.floor(Math.random() * arrBackgroundColours.length)
-    console.log(arrBackgroundColours[randElement].hex)
     return arrBackgroundColours[randElement].hex
 }
 
 function randBorderColour(){
     var randElement = Math.floor(Math.random() * arrImageBorders.length)
-    console.log(arrImageBorders[randElement].hex)
     return arrImageBorders[randElement].hex
 }
 
@@ -473,6 +522,9 @@ $('#btnAddClass').click(function(){
                 var borderColour = randBorderColour();
                 var classItem = '<div><img class="classImg enterClass" id="' + tempClassName + '"src="images/class.png" width="140" height="140" style="border: 5px solid '+ borderColour +';"><label class = "classImglbl" id="' + newClassCode + 'lbl">'+ tempClassName + '</label><label class="classCodeDisplay">'+newClassCode+'</label></div>';
                 $(classItem).prependTo(".classroomDisplay")
+
+                //clear input box
+                $('#recieveClassCode').val('')
             }
         count ++;
         }
@@ -480,7 +532,6 @@ $('#btnAddClass').click(function(){
         if(found == false || foundWithUser == true){
             $('#classCodeNotValid').text("invalid class code or already added");
         }
-
     }else{
         $('#addClassNotComplete').text("*Please fill out required information");
     }
@@ -572,6 +623,8 @@ $("body").keydown(function(event){
         $("#inClassUser").animate({left:"+=50px"});
         window.scrollBy(50,0)
         checkSound();
+        checkFish();
+        checkPinboard();
 
     }
     //down
@@ -579,6 +632,8 @@ $("body").keydown(function(event){
         $("#inClassUser").animate({top:"+=50px"});
         window.scrollBy(0,50)
         checkSound();
+        checkFish();
+        checkPinboard();
     }
 
     //up//
@@ -586,12 +641,16 @@ $("body").keydown(function(event){
         $("#inClassUser").animate({top:"-=50px"});
         window.scrollBy(0,-50)
         checkSound();
+        checkFish();
+        checkPinboard();
     }
     //left// 
     if (event.which == 37 || event.which == 65 && userLeft > 0) {
         $("#inClassUser").animate({left:"-=50px"});
         window.scrollBy(-50,0)
         checkSound();
+        checkFish();
+        checkPinboard();
     }
     }
 });

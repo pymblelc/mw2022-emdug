@@ -491,6 +491,14 @@ html, body {margin:0; padding:0;}
   width: 100%;
 }
 
+#fishPrompt{
+  left: 172px;
+  bottom: 313px;
+  position:absolute;
+  display: none;
+  
+}
+
 
 #progressbar{
   position: absolute;
@@ -514,6 +522,13 @@ html, body {margin:0; padding:0;}
   left: 1110px;
   top: 90px;
   cursor: pointer;
+}
+
+#pinboardPrompt{
+  left: 1150px;
+  top: 103px;
+  position:absolute;
+  display: none;
 }
 
 #forum{
