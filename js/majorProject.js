@@ -525,6 +525,8 @@ $('#btnAddClass').click(function(){
 
                 //clear input box
                 $('#recieveClassCode').val('')
+                $('#classCodeNotValid').val('')
+                $('#addClassNotComplete').val('');
             }
         count ++;
         }

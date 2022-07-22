@@ -577,7 +577,7 @@ html, body {margin:0; padding:0;}
 }
 
 .pinboardBtn{
-  width: 571px;
+  width: 517px;
   top: 87px;
   height: 44px;
   z-index: 5;
@@ -585,7 +585,7 @@ html, body {margin:0; padding:0;}
 
 #btnCreatePost{
   position: absolute;
-  left: 568px;
+  left: 508px;
   cursor: pointer;
 }
 
