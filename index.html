@@ -1,1 +1,185 @@
-<!-- Add your website root here -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Major work</title>
+  <link rel="stylesheet" href="css/majorProject.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+    integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <!-- <div><button id="btnShortcut">HERE</button></div>
+  <div><button id="btnShortcut2">HERE 2</button></div> -->
+
+  <div class="loader"></div>
+
+  <!-- Login -->
+  <div id="bannerSetup">
+    <div id="topBanner">
+      <div id="VClass">VClass</div>
+      <div id="switchToRegister">
+        <div id="newToVclass">New To VClass?</div>
+        <div><button class="btn" id="btnRegisterPage">Register</button></div>
+      </div>
+      <div id="switchToLogin">
+        <div id="newToVclass">Already have an account?</div>
+        <div><button class="btn" id="btnLoginPage">Login</button></div>
+      </div>
+      <div id="homeImgJoin"><img src="images/home.png" width="50px" height="50px"></div>
+    </div>
+  </div>
+
+  <div class="form" id="login-form">
+    <h1>Login</h1>
+    <div class="subheader">
+      <h2>Login to join your virtual classroom space.</h2>
+    </div>
+    <div class="notComplete" id="loginNotComplete"></div>
+    <div><label>Email: </label><input id="loginEmail" type="email" required></div>
+    <div><label>Password: </label><input id="loginPassword" type="password" required></div>
+    <div id="fg-errors" class="form-group"></div>
+    <button class="btn" id="btnLogin">Login</button>
+  </div>
+
+  <!-- Register -->
+  <div class="form" id="register-form">
+    <div class="header">
+      <h1>Register</h1>
+    </div>
+    <div class="subheader">
+      <h2>Register to get started.</h2>
+    </div>
+    <div class="notComplete" id="registerNotComplete"></div>
+    <div><label>Email: </label><input id="registerEmail" type="text" required></div>
+    <div><label>Full Name: </label><input id="fullName" type="text"></div>
+    <div><label>Password: </label><input id="registerPassword" type="password"></div>
+    <div><label>User Type:</label>
+      <select class=select id="userType">
+        <option value="teacher">Teacher</option>
+        <option value="student">Student</option>
+      </select>
+    </div>
+    <div><button class="btn" id="btnRegister">Submit</button></div>
+  </div>
+
+
+
+  <!-- Home Page -->
+  <div id="homePage">
+    <div id="titleHomePage">Home Page</div>
+    <div id="welcome"></div>
+    <div id="line3"></div>
+    <div class="classroomDisplay">
+      <!-- <div>
+        <img class="classImg enterClass" id="mathClassroom" src="images/math.jpg" width="140" height="140"><label
+          id="mathClassroomlbl">Math 02</label>
+      </div> -->
+      <img class="classImg" id="imgNewClass" src="images/add.svg" width="140" height="140">
+    </div>
+    <div id = 'greyScreen'></div>
+    <div id="createClass">
+      <div><button id="btnExitCreate">X</button></div>
+      <div id = 'createClass1'>
+        <div class = "classMakerHeadings">Create a class</div>
+        <div class="notComplete" id="createClassNotComplete"></div>
+        <div class = 'fontControl'><label>Class Name: </label><input id="className" type="text"></div>
+        <div><button class = "btn" id="btnCreateClass">Create Class</button></div>
+      </div>
+      <div id = 'createClass2'>
+        <div class = "classMakerHeading" id = 'classCodeHeader'>Class Code</div>
+        <div id = "classCodeInstructions" class = 'fontControl'> Students log in with this class code: </div>
+        <div id="generateClassCode"></div>
+      </div>
+    </div>
+    <div id="addClass">
+      <div class = "classMakerHeadings">Add a Class</div>
+      <div class="notComplete" id="classCodeNotValid"></div>
+      <div class="notComplete" id="addClassNotComplete"></div>
+      <div class = 'fontControl'><label>Class code: </label><input id="recieveClassCode" type="text"></div>
+      <div><button id="btnExitAdd">X</button></div>
+      <div><button class = "btn" id="btnAddClass">Add Class</button></div>
+    </div>
+  </div>
+
+  <!-- Joining Class -->
+  <div class="joinClass" id="join-form">
+    <h1>.....You're Joining....</h1>
+    <h2 id="joinClassName"></h2>
+    <div class="notComplete" id="joinNotComplete"></div>
+    <div class = "videoContainer" id = "outOfClassUser">
+      <video class="myPhotos userSample" id="myVideo" autoplay
+      style="object-fit:cover; transform: scaleX(-1);"></video>
+    </div>
+    <div><label>Nickname: </label><input id="nickname"></div>
+    <div><label>What are you working on: </label><input id="work"></div>
+    <div>
+      <label>Camera:</label>
+      <label class="switch" id = "cameraSwitchLogin">
+        <input type="checkbox" id="camera">
+        <span class="slider round" id = "cameraSlider"></span>
+      </label>
+      <!-- <label>Microphone:</label>
+      <label class="switch" id = "microphoneSwitchLogin">
+        <input type="checkbox">
+        <span class="slider round"></span>
+      </label> -->
+    </div>
+    <div><button class=btn id="btnJoinClass">Join Class</button></div>
+  </div>
+  </div>
+
+  <!-- Random class setup -->
+  <div class="furniture">
+    <div id="classroomName">- - - - - - - - Maths 02 - - - - - - - -</div>
+    <div class = "videoContainer" id = "inClassUser"></div>
+    <div class="pinboard"><img id="pinboard" src="images/pinboard.png" width="auto" height="250"></div>
+    <div id="pinboardPrompt">* click to see the pinboard! *</div>
+    <div id="forum">
+      <div id="banner2"></div>
+      <div id="pinboardName"></div>
+      <div><button id="btnExitPinboard" >X</button></div>
+      <div><button id="btnPosts" class='btn pinboardBtn'>Posts</button></div>
+      <div><button id ="btnCreatePost" class='btn pinboardBtn'>Create Post</button></div>
+      <div id="postsContainer">
+        <div id="noPosts">There are no posts yet :(</div>
+      </div>
+      <div id="createPostContainer">
+        <div class="notComplete" id="postNotComplete"></div>
+        <div><label>Title:</label><input class ="pinboardInput" id="postTitle" type="text" required></div>
+        <div><label>Text:</label><textarea class = "pinbaordInput" id="postText" type="text"></textarea></div>
+        <div><button class="btn" id="btnSubmitPost">Post</button></div>
+      </div>
+    </div>
+    <!-- <div><img id="zoomIn" src="images/plus.png" width="50px" height="50px"></div>
+    <div><img id="zoomOut" src="images/minus.png" width="50px" height="50px"></div> -->
+    <div id="background"><img id="backgroundImg" src="images/room2.png"></div>
+    <audio  id ="music">
+      <source src="images/studyMusic.mp3" type="audio/mpeg">
+    </audio>
+    <div id="toolBar">
+      <div id="homeImgInClass"><img src="images/home.png" width="50px" height="50px"></div>
+      <div class = "switchInClass">
+        <span id = "cameraSwitchInClass"> Camera:</span>
+        <!-- <span id = "microphoneSwitchInClass">Microphone:</span> -->
+      </div>
+    </div>
+    <div id="fishPrompt"> * click to feed the fish! * </div>
+    <div class="parent" id="fishContainer">
+      <div id="progressbar">
+        <div id="progress"></div>
+      </div>
+      <img class="fishBowl" src="images/fishBowl.png">
+      <img class="fish" src="images/fish.png" width="20" height="20">
+    </div>
+  </div>
+
+  </div>
+
+
+  <script type="text/javascript" src="js/majorProject.js"></script>
+</body>
+
+</html>
